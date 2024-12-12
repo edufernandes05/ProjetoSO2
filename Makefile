@@ -16,14 +16,14 @@ kvs: main.c constants.h operations.o parser.o kvs.o
 	$(CC) $(CFLAGS) -o kvs main.c operations.o parser.o kvs.o -lpthread
 
 %.o: %.c %.h
-    $(CC) $(CFLAGS) -c ${@:.o=.c}
+	$(CC) $(CFLAGS) -c ${@:.o=.c}
 
 run: kvs
-    @./kvs
+	@./kvs
 
 clean:
-    rm -f *.o kvs
+	rm -f *.o kvs
 
 format:
-    @which clang-format >/dev/null 2>&1 || echo "Please install clang-format to run this command"
-    clang-format -i *.c *.h
+	@which clang-format >/dev/null 2>&1 || echo "Please install clang-format to run this command"
+	clang-format -i *.c *.h
