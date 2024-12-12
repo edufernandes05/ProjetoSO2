@@ -4,15 +4,18 @@ CC = gcc
 CFLAGS = -g -std=c17 -D_POSIX_C_SOURCE=200809L \
          -Wall -Werror -Wextra \
          -Wcast-align -Wconversion -Wfloat-equal -Wformat=2 -Wnull-dereference -Wshadow -Wsign-conversion -Wswitch-enum -Wundef -Wunreachable-code -Wunused \
+         -fsanitize=address -fsanitize=undefined
 
 ifneq ($(shell uname -s),Darwin) # if not MacOS
-	CFLAGS += -fmax-errors=5
+    CFLAGS += -fmax-errors=5
 endif
+
+LDFLAGS = -fsanitize=address -fsanitize=undefined -lpthread
 
 all: kvs
 
 kvs: main.c constants.h operations.o parser.o kvs.o
-	$(CC) $(CFLAGS) -o kvs main.c operations.o parser.o kvs.o -lpthread
+	$(CC) $(CFLAGS) -o kvs main.c operations.o parser.o kvs.o $(LDFLAGS)
 
 %.o: %.c %.h
 	$(CC) $(CFLAGS) -c ${@:.o=.c}
